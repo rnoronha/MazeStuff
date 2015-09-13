@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MazeGenerator.other;
+using System;
 
 namespace MazeGenerator.maze.generator
 {
@@ -13,7 +10,7 @@ namespace MazeGenerator.maze.generator
             MazeBuilder<T> builder = new MazeBuilder<T>(width, height);
 
             Random r = new Random();
-            builder.Maze.ForEach((i, j) => r.Next(2) == 1 ? open : wall);
+            Point start = new Point(r.Next(width), r.Next(height));
             
             return builder.ToMaze();
         }
