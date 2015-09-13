@@ -28,5 +28,17 @@ namespace MazeGenerator.other
 
             return other.X == this.X && other.Y == this.Y;
         }
+
+        public static Point operator -(Point a, Point b)
+        {
+            return new Point(a.X - b.X, a.Y - b.Y);
+        }
+
+        public static Point operator /(Point a, int over)
+        {
+            if (over == 0) throw new ArgumentOutOfRangeException("Can't divide by zero");
+
+            return new Point(a.X / over, a.Y / over);
+        }
     }
 }

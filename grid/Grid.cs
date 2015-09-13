@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace MazeGenerator.maze
 {
-    class Maze<T>
+    class Grid<T>
     {
         protected Cell<T>[,] array;
 
-        public Maze(int width, int height)
+        public Grid(int width, int height)
         {
-            if (width <= 0 || width <= 0) throw new ArgumentOutOfRangeException("Width and height should be greater than zero");
+            if (width <= 0 || height <= 0) throw new ArgumentOutOfRangeException("Width and height should be greater than zero");
 
             array = new Cell<T>[width, height];
 
@@ -26,7 +26,7 @@ namespace MazeGenerator.maze
             }
         }
 
-        public Maze(Cell<T>[,] array)
+        public Grid(Cell<T>[,] array)
         {
             this.array = array;
         }
@@ -41,7 +41,7 @@ namespace MazeGenerator.maze
             var results = new List<Cell<T>>();
 
             //This almost seems like a waste of a for loop
-            for(int i = -1; i < 2; i += 2)
+            for(int i = -2; i < 2; i += 4)
             {
                 results.Add(this[i + x, y]);
                 results.Add(this[x, i + y]);

@@ -7,9 +7,9 @@ namespace MazeGenerator.maze.generator
 {
     class Generator<T> where T : struct
     {
-        public static Maze<T> Generate(int width, int height, T open, T wall)
+        public static Grid<T> Generate(int width, int height, T open, T wall)
         {
-            MazeBuilder<T> builder = new MazeBuilder<T>(width, height);
+            GridBuilder<T> builder = new GridBuilder<T>(width, height);
 
             Random r = new Random();
             Point start = new Point(r.Next(width), r.Next(height));
@@ -20,7 +20,7 @@ namespace MazeGenerator.maze.generator
 
             while(lookee.Count > 0)
             {
-                Maze<T?> m = builder.Maze;
+                Grid<T?> m = builder.Grid;
                 int index = r.Next(lookee.Count);
                 Point current = lookee[index];
                 lookee.RemoveAt(index);
