@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MazeGenerator.other;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,36 +9,48 @@ namespace MazeGenerator.maze
 {
     class Maze<T>
     {
-        protected T[,] array;
+        protected Cell<T>[,] array;
 
         public Maze(int width, int height)
         {
             if (width <= 0 || width <= 0) throw new ArgumentOutOfRangeException("Width and height should be greater than zero");
 
-            array = new T[width, height];
+            array = new Cell<T>[width, height];
+
+            for (int i = 0; i < width; i++)
+            {
+                for(int j = 0; j < height; j++)
+                {
+                    array[i, j] = new Cell<T>(new Point(i, j), default(T));
+                }
+            }
         }
 
-        public Maze(T[,] array)
+        public Maze(Cell<T>[,] array)
         {
             this.array = array;
         }
 
-        public Maze<T> Adjacent(int x, int y)
+        public List<Cell<T>> CardinalAdjacent(Point p)
         {
-            T[,] results = new T[3,3];
-
-            for(int i = 0; i < 3; i++)
-            {
-                for(int j = 0; j < 3; j++)
-                {
-                    results[i, j] = this[x + i, y + j];
-                }
-            }
-
-            return new Maze<T>(results);
+            return CardinalAdjacent(p.X, p.Y);
         }
 
-        public void ForEach(Action<int, int, T> a)
+        public List<Cell<T>> CardinalAdjacent(int x, int y)
+        {
+            var results = new List<Cell<T>>();
+
+            //This almost seems like a waste of a for loop
+            for(int i = -1; i < 2; i += 2)
+            {
+                results.Add(this[i + x, y]);
+                results.Add(this[x, i + y]);
+            }
+
+            return results;
+        }
+
+        public void ForEach(Action<int, int, Cell<T>> a)
         {
             for (int i = 0; i < Width; i++)
             {
@@ -48,7 +61,7 @@ namespace MazeGenerator.maze
             }
         }
 
-        public void ForEach(Func<int, int, T> a)
+        public void ForEach(Func<int, int, Cell<T>> a)
         {
             for (int i = 0; i < Width; i++)
             {
@@ -59,12 +72,12 @@ namespace MazeGenerator.maze
             }
         }
 
-        public void ForEach(Action<T> a)
+        public void ForEach(Action<Cell<T>> a)
         {
             ForEach((i, j, v) => a(v));
         }
 
-        public bool All(Func<T, bool> f)
+        public bool All(Func<Cell<T>, bool> f)
         {
             for (int i = 0; i < Width; i++)
             {
@@ -88,8 +101,8 @@ namespace MazeGenerator.maze
                 for (int j = 0; j < Height; j++)
                 {
                     var str = "?";
-                    var tmp = this[i, j];
-                    if (tmp.Equals(default(T)))
+                    var tmp = this[i, j].val;
+                    if (!tmp.Equals(default(T)))
                     {
                         str = tmp.ToString();
                     }
@@ -107,39 +120,40 @@ namespace MazeGenerator.maze
         /// <param name="x"></param>
         /// <param name="y"></param>
         /// <returns></returns>
-        public T this[int x, int y]
+        public Cell<T> this[int x, int y]
         {
             get
             {
-                x = x % Width;
-                y = y % Height;
+                x = (x + Width) % Width;
+                y = (y + Height) % Height;
 
                 return array[x, y];
             }
 
             set
             {
-                x = x % Width;
-                y = y % Height;
+                x = (x + Width) % Width;
+                y = (y + Height) % Height;
 
                 array[x, y] = value;
             }
         }
+        
+        public Cell<T> this[Point p]
+        {
+            get { return this[p.X, p.Y]; }
+
+            set { this[p.X, p.Y] = value; }
+        }
 
         public int Width
         {
-            get
-            {
-                return array.GetLength(0);
-            }
+            get { return array.GetLength(0); }
         }
 
         public int Height
         {
-            get
-            {
-                return array.GetLength(1);
-            }
+            get { return array.GetLength(1); }
         }
     }
 }
