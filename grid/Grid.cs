@@ -9,39 +9,39 @@ namespace MazeGenerator.maze
 {
     class Grid<T, V> where T : Cell<V>
     {
-        protected Cell<V>[,] array;
+        protected T[,] array;
 
         public Grid(int width, int height)
         {
             if (width <= 0 || height <= 0) throw new ArgumentOutOfRangeException("Width and height should be greater than zero");
 
-            array = new Cell<V>[width, height];
+            array = new T[width, height];
 
             for (int i = 0; i < width; i++)
             {
                 for(int j = 0; j < height; j++)
                 {
-                    array[i, j] = new Cell<V>(new Point(i, j), default(V));
+                    array[i, j] = Activator.CreateInstance(typeof(T), new object[] { new Point(i, j) }) as T;
                 }
             }
         }
 
-        public Grid(Cell<V>[,] array)
+        public Grid(T[,] array)
         {
             this.array = array;
         }
 
-        public List<Cell<V>> CardinalAdjacent(Point p)
+        public List<T> CardinalAdjacent(Point p)
         {
             return CardinalAdjacent(p.X, p.Y);
         }
 
-        public List<Cell<V>> CardinalAdjacent(int x, int y)
+        public List<T> CardinalAdjacent(int x, int y)
         {
-            var results = new List<Cell<V>>();
+            var results = new List<T>();
 
             //This almost seems like a waste of a for loop
-            for(int i = -2; i < 2; i += 4)
+            for(int i = -1; i < 2; i += 2)
             {
                 results.Add(this[i + x, y]);
                 results.Add(this[x, i + y]);
@@ -66,7 +66,7 @@ namespace MazeGenerator.maze
             ForEach((v) => a(v.val));
         }
 
-        public void ForEach(Func<int, int, Cell<V>> a)
+        public void ForEach(Func<int, int, T> a)
         {
             for (int i = 0; i < Width; i++)
             {
@@ -120,7 +120,7 @@ namespace MazeGenerator.maze
         /// <param name="x"></param>
         /// <param name="y"></param>
         /// <returns></returns>
-        public Cell<V> this[int x, int y]
+        public T this[int x, int y]
         {
             get
             {
@@ -139,7 +139,7 @@ namespace MazeGenerator.maze
             }
         }
         
-        public Cell<V> this[Point p]
+        public T this[Point p]
         {
             get { return this[p.X, p.Y]; }
 

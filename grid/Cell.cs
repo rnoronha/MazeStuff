@@ -16,6 +16,12 @@ namespace MazeGenerator.other
             this.loc = loc;
             this.val = val;
         }
+
+        public Cell(Point loc)
+        {
+            this.loc = loc;
+            this.val = default(T);
+        }
     }
 
     class Cell

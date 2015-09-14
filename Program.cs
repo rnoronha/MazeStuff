@@ -12,7 +12,7 @@ namespace MazeGenerator
     {
         static void Main(string[] args)
         {
-            var maze = new Maze(10, 10);
+            var maze = Generator.Generate(10, 10);
 
 
             Console.WriteLine(maze.ToString());

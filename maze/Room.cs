@@ -9,6 +9,8 @@ namespace MazeGenerator.maze
 {
     class Room : Cell<List<Wall>>
     {
+        public int VisitCount { get; set; }
+
         /// <summary>
         /// The walls adjacent to this room. Shared with other rooms. There's always 4. 
         /// order is Never Eat Soggy Worms: 
@@ -21,6 +23,10 @@ namespace MazeGenerator.maze
         {
             var me = this;
             walls.ForEach(w => w.Neighbors.Add(me));
+        }
+
+        public Room(Point p) : base(p)
+        {
         }
     }
 }
