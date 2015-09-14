@@ -17,4 +17,12 @@ namespace MazeGenerator.other
             this.val = val;
         }
     }
+
+    class Cell
+    {
+        public static Cell<T> Create<T>(Point p, T val)
+        {
+            return new Cell<T>(p, val);
+        }
+    }
 }

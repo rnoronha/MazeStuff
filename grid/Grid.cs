@@ -7,38 +7,38 @@ using System.Threading.Tasks;
 
 namespace MazeGenerator.maze
 {
-    class Grid<T>
+    class Grid<T, V> where T : Cell<V>
     {
-        protected Cell<T>[,] array;
+        protected Cell<V>[,] array;
 
         public Grid(int width, int height)
         {
             if (width <= 0 || height <= 0) throw new ArgumentOutOfRangeException("Width and height should be greater than zero");
 
-            array = new Cell<T>[width, height];
+            array = new Cell<V>[width, height];
 
             for (int i = 0; i < width; i++)
             {
                 for(int j = 0; j < height; j++)
                 {
-                    array[i, j] = new Cell<T>(new Point(i, j), default(T));
+                    array[i, j] = new Cell<V>(new Point(i, j), default(V));
                 }
             }
         }
 
-        public Grid(Cell<T>[,] array)
+        public Grid(Cell<V>[,] array)
         {
             this.array = array;
         }
 
-        public List<Cell<T>> CardinalAdjacent(Point p)
+        public List<Cell<V>> CardinalAdjacent(Point p)
         {
             return CardinalAdjacent(p.X, p.Y);
         }
 
-        public List<Cell<T>> CardinalAdjacent(int x, int y)
+        public List<Cell<V>> CardinalAdjacent(int x, int y)
         {
-            var results = new List<Cell<T>>();
+            var results = new List<Cell<V>>();
 
             //This almost seems like a waste of a for loop
             for(int i = -2; i < 2; i += 4)
@@ -50,18 +50,23 @@ namespace MazeGenerator.maze
             return results;
         }
 
-        public void ForEach(Action<int, int, Cell<T>> a)
+        public void ForEach(Action<Cell<V>> a)
         {
             for (int i = 0; i < Width; i++)
             {
                 for (int j = 0; j < Height; j++)
                 {
-                    a(i, j, this[i, j]);
+                    a(this[i, j]);
                 }
             }
         }
 
-        public void ForEach(Func<int, int, Cell<T>> a)
+        public void ForEach(Action<V> a)
+        {
+            ForEach((v) => a(v.val));
+        }
+
+        public void ForEach(Func<int, int, Cell<V>> a)
         {
             for (int i = 0; i < Width; i++)
             {
@@ -72,12 +77,7 @@ namespace MazeGenerator.maze
             }
         }
 
-        public void ForEach(Action<Cell<T>> a)
-        {
-            ForEach((i, j, v) => a(v));
-        }
-
-        public bool All(Func<Cell<T>, bool> f)
+        public bool All(Func<Cell<V>, bool> f)
         {
             for (int i = 0; i < Width; i++)
             {
@@ -120,7 +120,7 @@ namespace MazeGenerator.maze
         /// <param name="x"></param>
         /// <param name="y"></param>
         /// <returns></returns>
-        public Cell<T> this[int x, int y]
+        public Cell<V> this[int x, int y]
         {
             get
             {
@@ -139,7 +139,7 @@ namespace MazeGenerator.maze
             }
         }
         
-        public Cell<T> this[Point p]
+        public Cell<V> this[Point p]
         {
             get { return this[p.X, p.Y]; }
 

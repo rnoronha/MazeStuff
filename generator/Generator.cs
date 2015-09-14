@@ -7,10 +7,10 @@ namespace MazeGenerator.maze.generator
 {
     class Generator<T> where T : struct
     {
-        public static Grid<T> Generate(int width, int height, T open, T wall)
+        public static Maze Generate(int width, int height, T open, T wall)
         {
-            GridBuilder<T> builder = new GridBuilder<T>(width, height);
-
+            return null;
+            /*
             Random r = new Random();
             Point start = new Point(r.Next(width), r.Next(height));
 
@@ -20,7 +20,6 @@ namespace MazeGenerator.maze.generator
 
             while(lookee.Count > 0)
             {
-                Grid<T?> m = builder.Grid;
                 int index = r.Next(lookee.Count);
                 Point current = lookee[index];
                 lookee.RemoveAt(index);
@@ -46,6 +45,7 @@ namespace MazeGenerator.maze.generator
             }
             
             return builder.Build();
+            */
         }
     }
 }
