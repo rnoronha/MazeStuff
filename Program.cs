@@ -12,10 +12,9 @@ namespace MazeGenerator
     {
         static void Main(string[] args)
         {
-            var maze = Generator.Generate(10, 10);
+            var maze = Generator.Generate(30, 39);
 
-
-            Console.WriteLine(maze.ToString());
+            Console.WriteLine(maze.toCellGrid('.', '#'));
             Console.ReadLine();
         }
     }

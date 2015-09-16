@@ -50,7 +50,7 @@ namespace MazeGenerator.maze
             return results;
         }
 
-        public void ForEach(Action<Cell<V>> a)
+        public void ForEach(Action<T> a)
         {
             for (int i = 0; i < Width; i++)
             {
@@ -59,11 +59,6 @@ namespace MazeGenerator.maze
                     a(this[i, j]);
                 }
             }
-        }
-
-        public void ForEach(Action<V> a)
-        {
-            ForEach((v) => a(v.val));
         }
 
         public void ForEach(Func<int, int, T> a)
@@ -77,7 +72,18 @@ namespace MazeGenerator.maze
             }
         }
 
-        public bool All(Func<Cell<V>, bool> f)
+        public void ForEach(Func<int, int, V> a)
+        {
+            for (int i = 0; i < Width; i++)
+            {
+                for (int j = 0; j < Height; j++)
+                {
+                    this[i, j] = Activator.CreateInstance(typeof(T), new object[] { new Point(i, j), a(i, j) }) as T;
+                }
+            }
+        }
+
+        public bool All(Func<T, bool> f)
         {
             for (int i = 0; i < Width; i++)
             {

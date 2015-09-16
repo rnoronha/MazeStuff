@@ -9,7 +9,7 @@ namespace MazeGenerator.other
     class Cell<T>
     {
         public readonly Point loc;
-        public readonly T val;
+        public T val;
 
         public Cell(Point loc, T val)
         {
@@ -22,6 +22,7 @@ namespace MazeGenerator.other
             this.loc = loc;
             this.val = default(T);
         }
+
     }
 
     class Cell
